@@ -7,7 +7,8 @@ import requests
 from bs4 import BeautifulSoup 
 import os
 
-url = 'https://wallhaven.cc/search?q=id:37&sorting=random&ref=fp'
+search = input('Please enter the category of your search: ').replace(" ", '+')
+url = 'https://wallhaven.cc/search?q=' + search
 
 r = requests.get(url)
 soup = BeautifulSoup(r.text, 'html.parser')
@@ -15,21 +16,24 @@ soup = BeautifulSoup(r.text, 'html.parser')
 #prints the tite of the site
 print(soup.title.text)
 
-# figures = soup.find_all('figure')
-# links = []
-# for figure in figures:
-#     links.append(figure.get('href'))
+figures = soup.find_all('figure')
+href = []
+for figure in figures:
+    h = figure.find('a').get('href')
+    href.append(h)
 
-# gets the thumbnails
-images = soup.find_all('img')
-
-fileNameCounter = 0
-for image in images:
-    link = image.get('data-src')
-    if fileNameCounter == 0:
-        fileNameCounter += 1
+fileCounter = 0
+for h in href:
+    r = requests.get(str(h))
+    soup = BeautifulSoup(r.text, 'html.parser')
+    image = soup.find('img', id="wallpaper")
+    if image is None:
+        continue
     else:
-        with open(str(fileNameCounter) + '.jpg', 'wb') as f:
-            im = requests.get(link)
-            f.write(im.content)
-        fileNameCounter += 1
+        image = image.get('src')
+    
+    with open(search + str(fileCounter) + '.jpg', 'wb') as f:
+        im = requests.get(image)
+        f.write((im.content))
+
+    fileCounter += 1
