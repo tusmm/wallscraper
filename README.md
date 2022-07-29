@@ -2,6 +2,8 @@
 Scrapes wallpaper websites for their imgs
 
 # dependencies
-import requests 
+```python
+import requests
 from bs4 import BeautifulSoup 
 import os
+```
