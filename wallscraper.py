@@ -1,12 +1,22 @@
 """
-get wallpapers from websites
+Author: Ryan Ong
+        rto9185@rit.edu
+File: wallscraper.py
+language: python3
+Description: scrapes images off of wallhaven.cc
 """
 
 import requests 
 from bs4 import BeautifulSoup 
 import os
 
-def imagedown(url, folder):
+'''
+Downloads a wall of wallpaper images from a search category
+from wallhaven.cc, into a folder in the parent directory of this file
+:param url: the: The url of the page
+:folder: The name of the folder/the name of the category
+'''
+def imageDown(url, folder):
     path = os.getcwd()
     parentDir = os.path.abspath(os.path.join(path, os.pardir))
     try:
@@ -33,7 +43,8 @@ def imagedown(url, folder):
         r = requests.get(str(h))
         soup = BeautifulSoup(r.text, 'html.parser')
         image = soup.find('img', id="wallpaper")
-        if image is None: # fixme: if an image is a png
+
+        if image is None: 
             continue
         else:
             image = image.get('src')
@@ -46,24 +57,35 @@ def imagedown(url, folder):
             print("Downloading images...")
 
         fileCounter += 1
+
     print("Finished downloading!")
 
-
+'''
+Gets the url of the wallhaven.cc website to be scraped
+:param category: The search category
+:return: returns the completed url of the category
+'''
 def getUrl(category):
     url = 'https://wallhaven.cc/search?q=' + category
     return url
 
-# prints a menu of valid commands
+'''
+Prints a help menu with valid commands
+'''
 def help():
     print("Available commands:")
     print("\tsearch <category>")
     print("\thelp")
     print("\tquit")
 
+'''
+Performs the search with the url and inputted category
+:param category: The category of the search
+'''
 def search(category):
     category = category.replace(" ", '+')
     url = getUrl(category)
-    imagedown(url, category)
+    imageDown(url, category)
 
 if __name__ == "__main__":
     print("Search for wallpapers on wallhaven.cc")
