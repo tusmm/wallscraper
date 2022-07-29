@@ -2,7 +2,6 @@
 get wallpapers from websites
 """
 
-from fileinput import filename
 import requests 
 from bs4 import BeautifulSoup 
 import os
@@ -23,8 +22,9 @@ def imagedown(url, folder):
     os.chdir(os.path.join(parentDir, folder))
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
-
-    #prints the tite of the site
+    
+    print("Beginning image download...")
+    # prints the tite of the site
     print(soup.title.text)
 
     figures = soup.find_all('figure')
@@ -38,7 +38,7 @@ def imagedown(url, folder):
         r = requests.get(str(h))
         soup = BeautifulSoup(r.text, 'html.parser')
         image = soup.find('img', id="wallpaper")
-        if image is None:
+        if image is None: # fixme: if an image is a png
             continue
         else:
             image = image.get('src')
@@ -47,7 +47,11 @@ def imagedown(url, folder):
             im = requests.get(image)
             f.write((im.content))
 
+        if fileCounter % 3 == 0:
+            print("Downloading images...")
+
         fileCounter += 1
+    print("Finished downloading!")
 
 if __name__ == "__main__":
     url, search = getUserInput()
