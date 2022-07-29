@@ -1,5 +1,5 @@
 # Wallscraper
-Scrapes wallhaven.cc for its wallpapers given a search term
+Scrapes [wallhaven.cc](https://wallhaven.cc/) for its wallpapers given a search term
 
 # Dependencies
 Install these moduules using pip
