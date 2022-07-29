@@ -78,12 +78,12 @@ if __name__ == "__main__":
 
         elif splitInput[0] == "search":
             search(splitInput[1])
-
+            print("Search for more wallpapers or enter 'quit' to quit")
         elif splitInput[0] == "help":
             help()
 
         else:
             print("Invalid command.")
             help()
+            continue
         
-        print("Search for more wallpapers or enter 'quit' to quit")
