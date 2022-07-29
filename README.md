@@ -1,9 +1,9 @@
-# wallscraper
-Scrapes wallpaper websites for their imgs
+# Wallscraper
+Scrapes wallhaven.cc for its wallpapers given a search term
 
-# dependencies
-```python
-import requests
-from bs4 import BeautifulSoup 
-import os
+# Dependencies
+Install these moduules using pip
+```
+pip install requests
+pip install bs4
 ```
