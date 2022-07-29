@@ -6,11 +6,6 @@ import requests
 from bs4 import BeautifulSoup 
 import os
 
-def getUserInput():
-    search = input('Please enter the category of your search: ').replace(" ", '+')
-    url = 'https://wallhaven.cc/search?q=' + search
-    return url, search
-
 def imagedown(url, folder):
     path = os.getcwd()
     parentDir = os.path.abspath(os.path.join(path, os.pardir))
@@ -43,7 +38,7 @@ def imagedown(url, folder):
         else:
             image = image.get('src')
         
-        with open(search + str(fileCounter) + '.jpg', 'wb') as f:
+        with open(folder + str(fileCounter) + '.jpg', 'wb') as f:
             im = requests.get(image)
             f.write((im.content))
 
@@ -53,6 +48,42 @@ def imagedown(url, folder):
         fileCounter += 1
     print("Finished downloading!")
 
+
+def getUrl(category):
+    url = 'https://wallhaven.cc/search?q=' + category
+    return url
+
+# prints a menu of valid commands
+def help():
+    print("Available commands:")
+    print("\tsearch <category>")
+    print("\thelp")
+    print("\tquit")
+
+def search(category):
+    category = category.replace(" ", '+')
+    url = getUrl(category)
+    imagedown(url, category)
+
 if __name__ == "__main__":
-    url, search = getUserInput()
-    imagedown(url, search)
+    print("Search for wallpapers on wallhaven.cc")
+    help()
+
+    while True:
+        splitInput = input("> ").split(" ", 1)
+        
+        if splitInput[0] == "quit":
+            print("Terminating program.")
+            exit()
+
+        elif splitInput[0] == "search":
+            search(splitInput[1])
+
+        elif splitInput[0] == "help":
+            help()
+
+        else:
+            print("Invalid command.")
+            help()
+        
+        print("Search for more wallpapers or enter 'quit' to quit")
